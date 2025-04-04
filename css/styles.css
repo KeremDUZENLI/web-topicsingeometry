@@ -1,90 +1,139 @@
 /* General Styles */
 body {
-    font-family: Calibri, Arial, sans-serif;
+    font-family: Calibri, sans-serif;
     margin: 0;
     padding: 0;
-  }
-  header {
-    background: #007acc;
-    color: #fff;
-    padding: 15px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+header {
+    background-color: #004080;
+    color: white;
+    padding: 20px;
     text-align: center;
-  }
-  header h1 {
+}
+
+header h1 {
+    font-size: 1.6em;
     margin: 0;
-  }
-  header h2 {
-    margin: 0;
-  }
-  .navbar {
+}
+
+header h2 {
+    font-size: 1.2em;
+    font-weight: normal;
+    margin: 5px 0 15px 0;
+}
+
+.navbar {
     margin-top: 10px;
-    text-align: center;
-  }
-  .navbar a {
-    color: #fff;
+}
+
+.navbar a {
+    color: #ffffff;
     text-decoration: none;
     margin: 0 15px;
-  }
-  main {
-    padding: 20px;
-    margin-bottom: 70px; /* Space for footer */
-  }
-  footer {
-    text-align: center;
-    padding: 10px;
-    background: #f1f1f1;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-  }
-  
-  /* Two-Column Layout */
-  .content {
-    display: flex;
-    gap: 20px;
-    flex-wrap: nowrap;
-  }
-  .question-pane, .answer-pane {
-    box-sizing: border-box;
-    padding: 15px;
-    border: 1px solid #ccc;
-    background: #fff;
-    overflow-y: auto;
-  }
-  .question-pane {
-    width: 40%;
-    min-height: 600px;
-  }
-  .answer-pane {
-    width: 60%;
-    position: relative;
-  }
+    font-weight: bold;
+}
 
-  /* Question Controls */
-  .question-controls {
-    text-align: center;
-    bottom: 10px;
-    width: 100%;
-  }
-  .question-controls button {
-    padding: 8px 12px;
-    margin: 0 10px;
-    font-size: 1em;
-  }
-  
-  /* PDF Viewer */
-  #pdf-viewer {
-    border: 1px solid #ddd;
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+main {
+    padding: 20px;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+/* Question Pane */
+.question-pane {
+    width: 40%;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.question-pane h2 {
+    color: #004080;
+}
+
+.question-pane h3 {
+    margin-top: 0;
+    color: #0066cc;
+}
+
+.question-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.question-controls button {
+    background-color: #004080;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.95em;
+}
+
+.question-controls button:hover {
+    background-color: #0066cc;
+}
+
+/* Answer Pane / PDF Viewer */
+.answer-pane {
+    width: 60%;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.answer-pane h2 {
+    color: #004080;
+}
+
+#pdf-viewer {
     width: 100%;
     height: 600px;
-  }
+    overflow: auto;
+    border: 1px solid #ddd;
+    background-color: #f0f0f0;
+}
 
-  /* Questions */
-  #question-text h3 {
-    font-size: 1.5em; /* Larger font for exercise number */
-    margin-bottom: 10px; /* Space below the heading */
-  }
-  #question-text p {
-    font-size: 1.2em; /* Slightly larger font for question text */
-    line-height: 1.6; /* Better spacing between lines */
-  }
+/* Footer */
+footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #eee;
+    color: #555;
+    font-size: 0.9em;
+    margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 960px) {
+    .content {
+        flex-direction: column;
+    }
+
+    .question-pane, .answer-pane {
+        width: 100%;
+    }
+
+    #pdf-viewer {
+        height: 500px;
+    }
+}
