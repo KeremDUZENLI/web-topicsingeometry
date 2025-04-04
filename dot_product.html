@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>1.2 Length and Dot Product of Vectors in Rⁿ</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #pdf-viewer { border: 1px solid #ccc; width: 100%; height: 600px; }
+    .controls { margin-top: 10px; }
+    .controls button { padding: 8px 12px; margin-right: 10px; }
+    nav a { margin-right: 15px; text-decoration: none; color: #007acc; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>1.2 Length and Dot Product of Vectors in Rⁿ</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dot_product.html">Go to Cross Product Section</a>
+    </nav>
+  </header>
+  <main>
+    <p>Question: <span id="page-number">1</span></p>
+    <div id="pdf-viewer"></div>
+    <div class="controls">
+      <button id="prev-page">Previous</button>
+      <button id="next-page">Next</button>
+    </div>
+  </main>
+  <!-- Include PDF.js from a CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+  <script>
+    const url = 'pdf/dot_product.pdf'; // Path to the dot product PDF
+    let pdfDoc = null,
+        pageNum = 1,
+        pageRendering = false,
+        pageNumPending = null,
+        scale = 1.5,
+        canvas = document.createElement('canvas'),
+        ctx = canvas.getContext('2d');
+    
+    document.getElementById('pdf-viewer').appendChild(canvas);
+    
+    function renderPage(num) {
+      pageRendering = true;
+      pdfDoc.getPage(num).then(function(page) {
+        const viewport = page.getViewport({ scale: scale });
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+    
+        const renderContext = { canvasContext: ctx, viewport: viewport };
+        const renderTask = page.render(renderContext);
+    
+        renderTask.promise.then(function() {
+          pageRendering = false;
+          document.getElementById('page-number').textContent = num;
+          if (pageNumPending !== null) {
+            renderPage(pageNumPending);
+            pageNumPending = null;
+          }
+        });
+      });
+    }
+    
+    function queueRenderPage(num) {
+      if (pageRendering) {
+        pageNumPending = num;
+      } else {
+        renderPage(num);
+      }
+    }
+    
+    document.getElementById('prev-page').addEventListener('click', function() {
+      if (pageNum <= 1) return;
+      pageNum--;
+      queueRenderPage(pageNum);
+    });
+    
+    document.getElementById('next-page').addEventListener('click', function() {
+      if (pageNum >= pdfDoc.numPages) return;
+      pageNum++;
+      queueRenderPage(pageNum);
+    });
+    
+    pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
+      pdfDoc = pdfDoc_;
+      renderPage(pageNum);
+    });
+  </script>
+</body>
+</html>
