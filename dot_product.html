@@ -3,89 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <title>1.2 Length and Dot Product of Vectors in Rⁿ</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    #pdf-viewer { border: 1px solid #ccc; width: 100%; height: 600px; }
-    .controls { margin-top: 10px; }
-    .controls button { padding: 8px 12px; margin-right: 10px; }
-    nav a { margin-right: 15px; text-decoration: none; color: #007acc; }
-  </style>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <header>
-    <h1>1.2 Length and Dot Product of Vectors in Rⁿ</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="dot_product.html">Go to Cross Product Section</a>
+    <h1>Geza Schay - A Concise Introduction to Linear Algebra</h1>
+    <h2>1.2 Length and Dot Product of Vectors in Rⁿ</h2>
+    <nav class="navbar">
+        <a href="index.html">Home</a>
+        <a href="dot_product.html">Dot Product Section</a>
+        <a href="cross_product.html">Cross Product Section</a>
     </nav>
   </header>
   <main>
-    <p>Question: <span id="page-number">1</span></p>
-    <div id="pdf-viewer"></div>
-    <div class="controls">
-      <button id="prev-page">Previous</button>
-      <button id="next-page">Next</button>
-    </div>
+    <section class="content">
+      <!-- Left column: Questions -->
+      <div class="question-pane">
+        <h2>Question</h2>
+        <div id="question-text">
+          <!-- The question text will be updated dynamically -->
+          <p>Loading question...</p>
+        </div>
+      </div>
+      <!-- Right column: PDF Viewer -->
+      <div class="answer-pane">
+        <h2>Answer Sheet</h2>
+        <div id="pdf-viewer"></div>
+        <div class="pdf-controls">
+          <button id="prev-page">Previous</button>
+          <span>Page: <span id="page-number">1</span> / <span id="total-pages">?</span></span>
+          <button id="next-page">Next</button>
+        </div>
+      </div>
+    </section>
   </main>
+  <footer>
+    <p>&copy; 2023 Your Name</p>
+  </footer>
   <!-- Include PDF.js from a CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+  <script src="js/pdfviewer.js"></script>
   <script>
-    const url = 'pdf/dot_product.pdf'; // Path to the dot product PDF
-    let pdfDoc = null,
-        pageNum = 1,
-        pageRendering = false,
-        pageNumPending = null,
-        scale = 1.5,
-        canvas = document.createElement('canvas'),
-        ctx = canvas.getContext('2d');
-    
-    document.getElementById('pdf-viewer').appendChild(canvas);
-    
-    function renderPage(num) {
-      pageRendering = true;
-      pdfDoc.getPage(num).then(function(page) {
-        const viewport = page.getViewport({ scale: scale });
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-    
-        const renderContext = { canvasContext: ctx, viewport: viewport };
-        const renderTask = page.render(renderContext);
-    
-        renderTask.promise.then(function() {
-          pageRendering = false;
-          document.getElementById('page-number').textContent = num;
-          if (pageNumPending !== null) {
-            renderPage(pageNumPending);
-            pageNumPending = null;
-          }
-        });
-      });
-    }
-    
-    function queueRenderPage(num) {
-      if (pageRendering) {
-        pageNumPending = num;
+    // Define an array of question texts corresponding to each page (adjust for 20 pages)
+    const questions = [
+      "Exercise 1.2.1: [Question text for page 1]",
+      "Exercise 1.2.2: [Question text for page 2]",
+      "Exercise 1.2.3: [Question text for page 3]",
+      "Exercise 1.2.4: [Question text for page 4]",
+      "Exercise 1.2.5: [Question text for page 5]",
+      "Exercise 1.2.6: [Question text for page 6]",
+      "Exercise 1.2.7: [Question text for page 7]",
+      "Exercise 1.2.8: [Question text for page 8]",
+      "Exercise 1.2.9: [Question text for page 9]",
+      "Exercise 1.2.10: [Question text for page 10]",
+      "Exercise 1.2.11: [Question text for page 11]",
+      "Exercise 1.2.12: [Question text for page 12]",
+      "Exercise 1.2.13: [Question text for page 13]",
+      "Exercise 1.2.14: [Question text for page 14]",
+      "Exercise 1.2.15: [Question text for page 15]",
+      "Exercise 1.2.16: [Question text for page 16]",
+      "Exercise 1.2.17: [Question text for page 17]",
+      "Exercise 1.2.18: [Question text for page 18]",
+      "Exercise 1.2.19: [Question text for page 19]",
+      "Exercise 1.2.20: [Question text for page 20]"
+    ];
+
+    // Update question text based on current page number
+    function updateQuestion(pageNum) {
+      const questionTextDiv = document.getElementById('question-text');
+      if (pageNum <= questions.length) {
+        questionTextDiv.innerHTML = "<p>" + questions[pageNum - 1] + "</p>";
       } else {
-        renderPage(num);
+        questionTextDiv.innerHTML = "<p>No question available for this page.</p>";
       }
     }
-    
-    document.getElementById('prev-page').addEventListener('click', function() {
-      if (pageNum <= 1) return;
-      pageNum--;
-      queueRenderPage(pageNum);
-    });
-    
-    document.getElementById('next-page').addEventListener('click', function() {
-      if (pageNum >= pdfDoc.numPages) return;
-      pageNum++;
-      queueRenderPage(pageNum);
-    });
-    
-    pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
-      pdfDoc = pdfDoc_;
-      renderPage(pageNum);
-    });
+
+    // Initialize PDF.js viewer for dot_product.pdf
+    initPDFViewer('pdf/dot_product.pdf', updateQuestion);
   </script>
 </body>
 </html>
