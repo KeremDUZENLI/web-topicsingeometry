@@ -21,7 +21,7 @@
 
       <!-- Left column: Questions -->
       <div class="question-pane">
-        <h2>Question</h2>
+        <h2>QUESTION</h2>
         <div id="question-text">
           <!-- The question text will be updated dynamically -->
           <p>Loading question...</p>
@@ -35,7 +35,7 @@
       
       <!-- Right column: PDF Viewer -->
       <div class="answer-pane">
-        <h2>Answer Sheet</h2>
+        <h2>ANSWER</h2>
         <div id="pdf-viewer"></div>
       </div>
 
@@ -45,28 +45,37 @@
     <p>&copy; 2023 Your Name</p>
   </footer>
   <!-- Include PDF.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-MML-AM_CHTML"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
   <script src="js/pdfviewer.js"></script>
   <script>
-    // Define an array of question texts for the cross product section (adjust for 10 pages)
+    // Define an array of question texts for Exercises 6.3.1 to 6.3.10
     const questions = [
-      "Exercise 6.3.1: [Question text for page 1]",
-      "Exercise 6.3.2: [Question text for page 2]",
-      "Exercise 6.3.3: [Question text for page 3]",
-      "Exercise 6.3.4: [Question text for page 4]",
-      "Exercise 6.3.5: [Question text for page 5]",
-      "Exercise 6.3.6: [Question text for page 6]",
-      "Exercise 6.3.7: [Question text for page 7]",
-      "Exercise 6.3.8: [Question text for page 8]",
-      "Exercise 6.3.9: [Question text for page 9]",
-      "Exercise 6.3.10: [Question text for page 10]"
+      "Exercise 6.3.1: \nFind the cross product of the vectors \\( \\mathbf{u} = (1, -1, 0)^T \\) and \\( \\mathbf{v} = (1, 2, 0)^T \\). <br> Verify by elementary geometry that \\( |\\mathbf{u} \\times \\mathbf{v}| \\) equals the area of the parallelogram spanned by \\( \\mathbf{u} \\) and \\( \\mathbf{v} \\).",
+      "Exercise 6.3.2: \nUse the cross product to find an equation of the plane \\( S \\) through the three points \\( A = (1, -1, 2) \\), \\( B = (0, -1, 3) \\), \\( C = (3, 0, 2) \\).",
+      "Exercise 6.3.3: \nVerify Statements 11, 12, and 13 of Theorem 6.3.1 for the vectors \\( \\mathbf{u} = (1, -1, 0)^T \\), \\( \\mathbf{v} = (1, 2, 0)^T \\), and \\( \\mathbf{w} = (1, 0, 3)^T \\).",
+      "Exercise 6.3.4: \nProve Statement 11 of Theorem 6.3.1.",
+      "Exercise 6.3.5: \nThe expression \\( \\mathbf{u} \\cdot (\\mathbf{v} \\times \\mathbf{w}) \\) of Statement 11 of Theorem 6.3.1 is called the triple product of these vectors. <br> Show geometrically that its absolute value equals the volume of the parallelepiped spanned by the vectors \\( \\mathbf{u} \\), \\( \\mathbf{v} \\), and \\( \\mathbf{w} \\).",
+      "Exercise 6.3.6: \nLet \\( \\mathbf{n}_1, \\mathbf{n}_2, \\mathbf{n}_3, \\mathbf{n}_4 \\) denote the outward pointing area vectors of a tetrahedron. <br> Prove that their sum equals 0. <br> (Hint: Let \\( \\mathbf{a}_1, \\ldots, \\mathbf{a}_6 \\) denote the edge vectors, write each area vector as a cross product of these, and apply the appropriate properties from Theorem 6.3.1 to the sum.)",
+      "Exercise 6.3.7: \nProve that for all vectors \\( \\mathbf{a}, \\mathbf{b}, \\mathbf{c}, \\mathbf{d} \\) of \\( \\mathbb{R}^3 \\) we have <br> \\( (\\mathbf{a} \\times \\mathbf{b}) \\cdot (\\mathbf{c} \\times \\mathbf{d}) = (\\mathbf{a} \\cdot \\mathbf{c})(\\mathbf{b} \\cdot \\mathbf{d}) - (\\mathbf{a} \\cdot \\mathbf{d})(\\mathbf{b} \\cdot \\mathbf{c}) \\).",
+      "Exercise 6.3.8: \nProve that for all vectors \\( \\mathbf{a}, \\mathbf{b}, \\mathbf{c}, \\mathbf{d} \\) of \\( \\mathbb{R}^3 \\) we have <br> \\( (\\mathbf{a} \\times \\mathbf{b}) \\times (\\mathbf{c} \\times \\mathbf{d}) = [\\operatorname{det}(\\mathbf{a}, \\mathbf{c}, \\mathbf{d})] \\mathbf{b} - [\\operatorname{det}(\\mathbf{b}, \\mathbf{c}, \\mathbf{d})] \\mathbf{a} \\) and <br> \\( (\\mathbf{a} \\times \\mathbf{b}) \\times (\\mathbf{c} \\times \\mathbf{d}) = [\\operatorname{det}(\\mathbf{a}, \\mathbf{b}, \\mathbf{d})] \\mathbf{c} - [\\operatorname{det}(\\mathbf{a}, \\mathbf{b}, \\mathbf{c})] \\mathbf{d} \\).",
+      "Exercise 6.3.9: \nLet \\( \\mathbf{a} \\) be any fixed nonzero vector of \\( \\mathbb{R}^3 \\). <br> Define the transformation \\( T: \\mathbb{R}^3 \\rightarrow \\mathbb{R}^3 \\) by \\( T(\\mathbf{x}) = \\mathbf{a} \\times \\mathbf{x} \\). <br> a. Show that \\( T \\) is linear. <br> b. Find the matrix \\( [T] \\) that represents \\( T \\) relative to the standard basis. <br> c. Find the null space of the matrix \\( [T] \\), and describe it geometrically. <br> d. What is the rank of \\( [T] \\)?",
+      "Exercise 6.3.10: \nExplain, using Equation 6.110, why in the northern hemisphere the circulation of hurricanes must be counterclockwise. <br> What is it in the southern hemisphere and why?"
     ];
 
     // Function to update the question text based on the current page number
     function updateQuestion(pageNum) {
       const questionTextDiv = document.getElementById('question-text');
       if (pageNum <= questions.length) {
-        questionTextDiv.innerHTML = "<p>" + questions[pageNum - 1] + "</p>";
+        // Split the question into exercise number and question text
+        const [exerciseNumber, ...questionParts] = questions[pageNum - 1].split(':');
+        const questionText = questionParts.join(':').trim();
+
+        // Display exercise number as a heading and question text as a paragraph
+        questionTextDiv.innerHTML = `<h3>${exerciseNumber}</h3><p>${questionText}</p>`;
+
+        // Reprocess MathJax after updating content
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, questionTextDiv]);
       } else {
         questionTextDiv.innerHTML = "<p>No question available for this page.</p>";
       }
@@ -74,6 +83,9 @@
 
     // Initialize PDF.js viewer for cross_product.pdf and pass in updateQuestion as callback
     initPDFViewer('pdf/cross_product.pdf', updateQuestion);
+
+    // Update total pages display
+    document.getElementById('total-pages').textContent = questions.length;
   </script>
 </body>
 </html>
