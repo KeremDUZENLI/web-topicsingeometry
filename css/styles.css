@@ -59,22 +59,22 @@ body {
     width: 60%;
     position: relative;
   }
-  
-  /* PDF Viewer and Controls */
-  #pdf-viewer {
-    border: 1px solid #ddd;
-    width: 100%;
-    height: 600px;
-  }
-  .pdf-controls {
+
+  /* Question Controls */
+  .question-controls {
     text-align: center;
-    position: absolute;
     bottom: 10px;
     width: 100%;
   }
-  .pdf-controls button {
+  .question-controls button {
     padding: 8px 12px;
     margin: 0 10px;
     font-size: 1em;
   }
   
+  /* PDF Viewer */
+  #pdf-viewer {
+    border: 1px solid #ddd;
+    width: 100%;
+    height: 600px;
+  }

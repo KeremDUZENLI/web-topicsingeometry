@@ -17,6 +17,7 @@
   </header>
   <main>
     <section class="content">
+
       <!-- Left column: Questions -->
       <div class="question-pane">
         <h2>Question</h2>
@@ -24,17 +25,19 @@
           <!-- The question text will be updated dynamically -->
           <p>Loading question...</p>
         </div>
-      </div>
-      <!-- Right column: PDF Viewer -->
-      <div class="answer-pane">
-        <h2>Answer Sheet</h2>
-        <div id="pdf-viewer"></div>
-        <div class="pdf-controls">
+        <div class="question-controls">
           <button id="prev-page">Previous</button>
           <span>Page: <span id="page-number">1</span> / <span id="total-pages">?</span></span>
           <button id="next-page">Next</button>
         </div>
       </div>
+      
+      <!-- Right column: PDF Viewer -->
+      <div class="answer-pane">
+        <h2>Answer Sheet</h2>
+        <div id="pdf-viewer"></div>
+      </div>
+
     </section>
   </main>
   <footer>
