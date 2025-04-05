@@ -32,13 +32,11 @@ This project is tied to the following academic context:
 - **Lecturer**: Dr. Sándor Bácsó, Private Professor
   - **Department**: Department of Data Science and Visualization
   - **Email**: [bacsos@unideb.hu](mailto:bacsos@unideb.hu)
-  - **Address**: 26 Kassai Road, Debrecen, Postcode 4028, Hungary
-  - **Profile**: [Tudóstér Profile](https://tudoster.unideb.hu/en/dr-sandor-bacso)
 
 ### Textbook
 
 - **Title**: _A Concise Introduction to Linear Algebra_
-- **Author**: Geza Schay
+- **Author**: Géza Schay
 - **Covered Sections**:
   - **Chapter 1.2**: Length and Dot Product of Vectors in Rⁿ
   - **Chapter 6.3**: The Cross Product of Vectors in R³
@@ -107,7 +105,7 @@ For bugs or suggestions, please open an issue on the [GitHub repository](https:/
 
 ## Credits
 
+- **Textbook Author**: Géza Schay
+- **Lecturer**: Dr. Sándor Bácsó, Private Professor
 - **Creator**: Kerem Düzenli
   - PhD student at the University of Debrecen
-- **Lecturer**: Dr. Sándor Bácsó, Private Professor
-- **Textbook Author**: Geza Schay
