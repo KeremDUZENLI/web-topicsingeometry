@@ -1,6 +1,6 @@
-# Topics in Geometry - Interactive Notes
+# TOPICS IN GEOMETRY
 
-Welcome to the **Topics in Geometry - Interactive Notes** repository! This project is a web-based interactive resource designed for the **IPPV202-K2 - Topics in Geometry** course at the University of Debrecen, Faculty of Informatics. It focuses on key concepts from **Geza Schay's "A Concise Introduction to Linear Algebra"**, specifically:
+Welcome to the [**KeremDUZENLI/web-topicsingeometry**](https://github.com/KeremDUZENLI/web-topicsingeometry) repository! This project is a web-based interactive resource designed for the **IPPV202-K2 - Topics in Geometry** course at the University of Debrecen, Faculty of Informatics. It focuses on key concepts from **Geza Schay's "A Concise Introduction to Linear Algebra"**, specifically:
 
 - **1.2 Length and Dot Product of Vectors in Rⁿ**
 - **6.3 The Cross Product of Vectors in R³**
@@ -111,9 +111,3 @@ For bugs or suggestions, please open an issue on the [GitHub repository](https:/
   - PhD student at the University of Debrecen
 - **Lecturer**: Dr. Sándor Bácsó, Private Professor
 - **Textbook Author**: Geza Schay
-
-Thank you for checking out this project! I hope it serves as a valuable resource for learning linear algebra.
-
----
-
-This README should meet your needs! Save it as `README.md` in your repository, and let me know if you'd like any adjustments.
