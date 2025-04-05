@@ -27,6 +27,7 @@ header h2 {
 
 .navbar {
     margin-top: 10px;
+    text-align: center;
 }
 
 .navbar a {
@@ -44,6 +45,7 @@ main {
     padding: 20px;
 }
 
+/* Two-Column Layout */
 .content {
     display: flex;
     flex-direction: row;
@@ -70,11 +72,14 @@ main {
     color: #0066cc;
 }
 
+/* Question Controls */
 .question-controls {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Center all controls horizontally */
     align-items: center;
+    gap: 20px; /* Equal spacing between elements */
     margin-top: 20px;
+    height: 50px;  /* Fixed height so they stay in the same spot */
 }
 
 .question-controls button {
@@ -84,11 +89,17 @@ main {
     padding: 8px 14px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 0.95em;
+    font-size: 1em;
+    width: 100px;
 }
 
 .question-controls button:hover {
     background-color: #0066cc;
+}
+
+.question-controls span {
+    font-size: 1em;
+    text-align: center;
 }
 
 /* Answer Pane / PDF Viewer */
@@ -124,16 +135,56 @@ footer {
 }
 
 /* Responsive Design */
-@media (max-width: 960px) {
+/* For tablets (max-width: 768px) */
+@media (max-width: 768px) {
     .content {
         flex-direction: column;
     }
-
     .question-pane, .answer-pane {
         width: 100%;
     }
-
     #pdf-viewer {
         height: 500px;
+    }
+    header h1 {
+        font-size: 1.4em;
+    }
+    header h2 {
+        font-size: 1.1em;
+    }
+    .question-controls button {
+        width: 90px;
+        font-size: 0.9em;
+    }
+}
+
+/* For phones (max-width: 480px) */
+@media (max-width: 480px) {
+    header {
+        padding: 15px;
+    }
+    header h1 {
+        font-size: 1.2em;
+    }
+    header h2 {
+        font-size: 1em;
+    }
+    .navbar a {
+        margin: 0 10px;
+        font-size: 0.9em;
+    }
+    main {
+        padding: 15px;
+    }
+    .question-controls {
+        flex-direction: column;
+        gap: 10px;
+        height: auto;
+    }
+    .question-controls button {
+        width: 100%;
+    }
+    #pdf-viewer {
+        height: 400px;
     }
 }
