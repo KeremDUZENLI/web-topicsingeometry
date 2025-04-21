@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  window.currentPageNum = 1
-
   const pdfVersions = {
     dot: {
       1: 'pdf/dot_product_v1.pdf',
@@ -30,12 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initPDFViewer(pdfUrl, pageNum => updateQuestion(pageNum, questions), window.currentPageNum);
     document.getElementById('total-pages').textContent = questions.length;
 
-    // Update active button styling
     version1Btn && version1Btn.classList.toggle('active', currentVersion === 1);
     version2Btn && version2Btn.classList.toggle('active', currentVersion === 2);
   }
 
-  // Wire up version buttons if present
   if (version1Btn && version2Btn) {
     version1Btn.addEventListener('click', () => {
       if (currentVersion !== 1) {
@@ -51,10 +47,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initial load
+  function changePage(delta) {
+    const newPage = window.currentPageNum + delta;
+    const totalPages = section.questions.length;
+    if (newPage >= 1 && newPage <= totalPages) {
+      window.currentPageNum = newPage;
+      currentVersion = 1;
+      loadVersion();
+    }
+  }
+
+  document.getElementById('prev-page').onclick = () => changePage(-1);
+  document.getElementById('next-page').onclick = () => changePage(1);
+
   loadVersion();
 });
-
 
 function initPDFViewer(pdfUrl, updateQuestionCallback, initialPageNum = 1) {
   let pdfDoc = null,
@@ -65,7 +72,7 @@ function initPDFViewer(pdfUrl, updateQuestionCallback, initialPageNum = 1) {
       ctx = canvas.getContext('2d');
 
   const pdfViewerContainer = document.getElementById('pdf-viewer');
-  pdfViewerContainer.innerHTML = "";
+  pdfViewerContainer.innerHTML = '';
   pdfViewerContainer.appendChild(canvas);
 
   function renderPage(num) {
@@ -73,27 +80,25 @@ function initPDFViewer(pdfUrl, updateQuestionCallback, initialPageNum = 1) {
     pageNum = num;
     document.dispatchEvent(new CustomEvent('pageChanged', { detail: num }));
 
-    pdfDoc.getPage(num).then(function(page) {
-      // Fit to container width with high-DPI support
+    pdfDoc.getPage(num).then(page => {
       const containerWidth = pdfViewerContainer.clientWidth;
-      const viewportAtScale1 = page.getViewport({ scale: 1 });
-      const pageWidth = viewportAtScale1.width;
-      const pageHeight = viewportAtScale1.height;
-      const baseScale = containerWidth / pageWidth;
-      const zoomFactor = 2;
-      const renderingScale = baseScale * zoomFactor;
-      const viewport = page.getViewport({ scale: renderingScale });
+      const { width: w, height: h } = page.getViewport({ scale: 1 });
+      const scale = containerWidth / w;
+      const viewport = page.getViewport({ scale: scale * 2 });
 
       canvas.width = viewport.width;
       canvas.height = viewport.height;
       canvas.style.width = containerWidth + 'px';
-      canvas.style.height = (containerWidth * (pageHeight / pageWidth)) + 'px';
+      canvas.style.height = (containerWidth * h / w) + 'px';
 
-      const renderContext = { canvasContext: ctx, viewport: viewport };
-      page.render(renderContext).promise.then(function() {
+      page.render({ canvasContext: ctx, viewport }).promise.then(() => {
         pageRendering = false;
         document.getElementById('page-number').textContent = num;
-        updateQuestionCallback && updateQuestionCallback(num);
+
+        if (typeof updateQuestionCallback === 'function') {
+          updateQuestionCallback(num, 1);
+        }
+
         if (pageNumPending !== null) {
           renderPage(pageNumPending);
           pageNumPending = null;
@@ -101,17 +106,6 @@ function initPDFViewer(pdfUrl, updateQuestionCallback, initialPageNum = 1) {
       });
     });
   }
-
-  function queueRender(num) {
-    pageRendering ? (pageNumPending = num) : renderPage(num);
-  }
-
-  document.getElementById('prev-page').onclick = () => {
-    if (pageNum > 1) queueRender(--pageNum);
-  };
-  document.getElementById('next-page').onclick = () => {
-    if (pdfDoc && pageNum < pdfDoc.numPages) queueRender(++pageNum);
-  };
 
   pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
     pdfDoc = pdf;
