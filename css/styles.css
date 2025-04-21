@@ -123,6 +123,25 @@ main {
 
 
 /* PDF Viewer */
+.version-switch {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.version-switch button {
+    background: #004080;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    margin: 0 5px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.version-switch button.active, .version-switch button:hover {
+    background: #0066cc;
+}
+
 #pdf-viewer {
     width: 100%;
     height: auto; /* Let the height adjust naturally */

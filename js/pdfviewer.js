@@ -1,6 +1,64 @@
-function initPDFViewer(pdfUrl, updateQuestionCallback) {
+document.addEventListener('DOMContentLoaded', () => {
+  window.currentPageNum = 1
+
+  const pdfVersions = {
+    dot: {
+      1: 'pdf/dot_product_v1.pdf',
+      2: 'pdf/dot_product_v2.pdf',
+      questions: questions_dot_product
+    },
+    cross: {
+      1: 'pdf/cross_product_v1.pdf',
+      2: 'pdf/cross_product_v2.pdf',
+      questions: questions_cross_product
+    }
+  };
+
+  const version1Btn = document.getElementById('version1-btn');
+  const version2Btn = document.getElementById('version2-btn');
+  const path = window.location.pathname;
+  const sectionKey = path.includes('dot_product') ? 'dot' : path.includes('cross_product') ? 'cross' : None;
+  const section = pdfVersions[sectionKey];
+
+  let currentVersion = 1;
+  window.currentPageNum = 1;
+
+  function loadVersion() {
+    const pdfUrl = section[currentVersion];
+    const questions = section.questions;
+
+    initPDFViewer(pdfUrl, pageNum => updateQuestion(pageNum, questions), window.currentPageNum);
+    document.getElementById('total-pages').textContent = questions.length;
+
+    // Update active button styling
+    version1Btn && version1Btn.classList.toggle('active', currentVersion === 1);
+    version2Btn && version2Btn.classList.toggle('active', currentVersion === 2);
+  }
+
+  // Wire up version buttons if present
+  if (version1Btn && version2Btn) {
+    version1Btn.addEventListener('click', () => {
+      if (currentVersion !== 1) {
+        currentVersion = 1;
+        loadVersion();
+      }
+    });
+    version2Btn.addEventListener('click', () => {
+      if (currentVersion !== 2) {
+        currentVersion = 2;
+        loadVersion();
+      }
+    });
+  }
+
+  // Initial load
+  loadVersion();
+});
+
+
+function initPDFViewer(pdfUrl, updateQuestionCallback, initialPageNum = 1) {
   let pdfDoc = null,
-      pageNum = 1,
+      pageNum = initialPageNum,
       pageRendering = false,
       pageNumPending = null,
       canvas = document.createElement('canvas'),
@@ -12,44 +70,30 @@ function initPDFViewer(pdfUrl, updateQuestionCallback) {
 
   function renderPage(num) {
     pageRendering = true;
-    pdfDoc.getPage(num).then(function(page) {
-      // Get the container's width
-      const containerWidth = pdfViewerContainer.clientWidth;
+    pageNum = num;
+    document.dispatchEvent(new CustomEvent('pageChanged', { detail: num }));
 
-      // Get the page's dimensions at scale 1
+    pdfDoc.getPage(num).then(function(page) {
+      // Fit to container width with high-DPI support
+      const containerWidth = pdfViewerContainer.clientWidth;
       const viewportAtScale1 = page.getViewport({ scale: 1 });
       const pageWidth = viewportAtScale1.width;
       const pageHeight = viewportAtScale1.height;
-
-      // Calculate the base scale to fit the container's width
       const baseScale = containerWidth / pageWidth;
-
-      // Define a zoom factor for higher resolution (e.g., 2 for 200% zoom capability)
       const zoomFactor = 2;
       const renderingScale = baseScale * zoomFactor;
-
-      // Create viewport with the rendering scale
       const viewport = page.getViewport({ scale: renderingScale });
 
-      // Set canvas dimensions to the high-resolution size
       canvas.width = viewport.width;
       canvas.height = viewport.height;
+      canvas.style.width = containerWidth + 'px';
+      canvas.style.height = (containerWidth * (pageHeight / pageWidth)) + 'px';
 
-      // Set display size to fit the container
-      const displayWidth = containerWidth;
-      const displayHeight = containerWidth * (pageHeight / pageWidth);
-      canvas.style.width = displayWidth + 'px';
-      canvas.style.height = displayHeight + 'px';
-
-      // Render the page
       const renderContext = { canvasContext: ctx, viewport: viewport };
-      const renderTask = page.render(renderContext);
-      renderTask.promise.then(function() {
+      page.render(renderContext).promise.then(function() {
         pageRendering = false;
         document.getElementById('page-number').textContent = num;
-        if (updateQuestionCallback) {
-          updateQuestionCallback(num);
-        }
+        updateQuestionCallback && updateQuestionCallback(num);
         if (pageNumPending !== null) {
           renderPage(pageNumPending);
           pageNumPending = null;
@@ -58,36 +102,27 @@ function initPDFViewer(pdfUrl, updateQuestionCallback) {
     });
   }
 
-  function queueRenderPage(num) {
-    if (pageRendering) {
-      pageNumPending = num;
-    } else {
-      renderPage(num);
-    }
+  function queueRender(num) {
+    pageRendering ? (pageNumPending = num) : renderPage(num);
   }
 
-  document.getElementById('prev-page').addEventListener('click', function() {
-    if (pageNum <= 1) return;
-    pageNum--;
-    queueRenderPage(pageNum);
-  });
+  document.getElementById('prev-page').onclick = () => {
+    if (pageNum > 1) queueRender(--pageNum);
+  };
+  document.getElementById('next-page').onclick = () => {
+    if (pdfDoc && pageNum < pdfDoc.numPages) queueRender(++pageNum);
+  };
 
-  document.getElementById('next-page').addEventListener('click', function() {
-    if (pageNum >= pdfDoc.numPages) return;
-    pageNum++;
-    queueRenderPage(pageNum);
-  });
-
-  pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc_) {
-    pdfDoc = pdfDoc_;
+  pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
+    pdfDoc = pdf;
     document.getElementById('total-pages').textContent = pdfDoc.numPages;
     renderPage(pageNum);
   });
 
-  // Handle window resize to adjust the PDF
-  window.addEventListener('resize', function() {
-    if (pdfDoc) {
-      renderPage(pageNum);
+  window.onresize = () => pdfDoc && renderPage(pageNum);
+  document.addEventListener('pageChanged', e => {
+    if (typeof e.detail === 'number') {
+      window.currentPageNum = e.detail;
     }
   });
 }

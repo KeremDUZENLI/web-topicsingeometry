@@ -34,6 +34,10 @@
       <!-- Right column: PDF Viewer -->
       <div class="answer-pane">
         <h2>ANSWER</h2>
+        <div class="version-switch">
+          <button id="version1-btn" class="active">Version 1</button>
+          <button id="version2-btn">Version 2</button>
+        </div>
         <div id="pdf-viewer"></div>
       </div>
 
@@ -47,12 +51,5 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
   <script src="js/dot_cross_product.js"></script>
   <script src="js/pdfviewer.js"></script>
-  <!-- Initialize viewer -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      initPDFViewer('pdf/dot_product.pdf', (pageNum) => updateQuestion(pageNum, questions_dot_product));
-      document.getElementById('total-pages').textContent = questions_dot_product.length;
-    });
-  </script>
 </body>
 </html>
