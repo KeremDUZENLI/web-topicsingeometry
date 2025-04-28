@@ -1,21 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
   const pdfVersions = {
     dot: {
+      questions: questions_dot_product,
       1: 'pdf/dot_product_v1.pdf',
       2: 'pdf/dot_product_v2.pdf',
-      questions: questions_dot_product
     },
     cross: {
+      questions: questions_cross_product,
       1: 'pdf/cross_product_v1.pdf',
       2: 'pdf/cross_product_v2.pdf',
-      questions: questions_cross_product
-    }
+    },
+    outcomes: {
+      questions: questions_learning_outcome,
+      1: 'pdf/learning_outcomes.pdf',
+    },
   };
 
   const version1Btn = document.getElementById('version1-btn');
   const version2Btn = document.getElementById('version2-btn');
   const path = window.location.pathname;
-  const sectionKey = path.includes('dot_product') ? 'dot' : path.includes('cross_product') ? 'cross' : None;
+  const sectionKey = path.includes('dot_product') ? 'dot' : path.includes('cross_product') ? 'cross' : path.includes('learning_outcomes') ? 'outcomes' : None;
   const section = pdfVersions[sectionKey];
 
   let currentVersion = 1;

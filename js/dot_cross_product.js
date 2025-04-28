@@ -36,6 +36,15 @@ const questions_cross_product = [
     "Exercise 6.3.10: \nExplain, using Equation 6.110, why in the northern hemisphere the circulation of hurricanes must be counterclockwise. <br> What is it in the southern hemisphere and why?"
   ];
 
+const questions_learning_outcome = [
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+]
+
 function updateQuestion(pageNum, questions) {
     const questionTextDiv = document.getElementById('question-text');
 
